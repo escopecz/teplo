@@ -1,0 +1,676 @@
+<!doctype html>
+<html lang="cs">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Heating ROI Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              display: ["Space Grotesk", "sans-serif"],
+              body: ["Manrope", "sans-serif"],
+            },
+            colors: {
+              night: "#0b0f1a",
+              ink: "#0f172a",
+              frost: "rgba(255, 255, 255, 0.16)",
+              beam: "#f59e0b",
+              mint: "#5eead4",
+              slate: "#cbd5f5",
+            },
+            boxShadow: {
+              glow: "0 20px 80px rgba(15, 23, 42, 0.35)",
+            },
+            backdropBlur: {
+              xs: "2px",
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body class="min-h-screen bg-night text-white font-body">
+    <div class="absolute inset-0 overflow-hidden">
+      <div class="absolute -top-40 left-0 h-96 w-96 rounded-full bg-amber-400/20 blur-[120px]"></div>
+      <div class="absolute top-40 right-0 h-[30rem] w-[30rem] rounded-full bg-teal-400/20 blur-[140px]"></div>
+      <div class="absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-sky-400/10 blur-[120px]"></div>
+    </div>
+
+    <main class="relative z-10 px-6 py-12 lg:px-12">
+      <header class="mx-auto mb-10 max-w-5xl">
+        <div class="flex items-center gap-3 text-amber-200">
+          <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-amber-300/20">
+            <i data-lucide="flame" class="h-5 w-5"></i>
+          </span>
+          <div>
+            <p class="text-sm uppercase tracking-[0.3em] text-amber-100/70">Heating ROI Calculator</p>
+            <h1 class="font-display text-3xl font-semibold tracking-tight md:text-4xl">
+              Porovnání návratnosti zdrojů tepla
+            </h1>
+          </div>
+        </div>
+        <p class="mt-4 max-w-3xl text-sm text-slate">
+          Získejte přehled o investici, provozních nákladech a vývoji ceny v čase. Kalkulačka využívá
+          fyzikální i ekonomický model a reaguje na změny vstupů v reálném čase.
+        </p>
+      </header>
+
+      <section
+        class="mx-auto grid max-w-6xl gap-8 rounded-[32px] bg-slate-950/70 p-6 shadow-glow backdrop-blur-xl md:p-10"
+      >
+        <div class="space-y-8">
+          <div class="rounded-2xl border border-white/15 bg-slate-900/70 p-6 text-slate-100">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <h2 class="font-display text-xl font-semibold">Vývoj nákladů v čase</h2>
+                <p class="mt-1 text-sm text-slate">Porovnání všech zdrojů napříč celým horizontem.</p>
+              </div>
+            </div>
+            <div class="mt-5 rounded-2xl border border-white/15 bg-slate-950/60 p-4">
+              <div class="flex flex-wrap items-end gap-4">
+                <label class="grid gap-2 text-xs text-slate">
+                  Plocha (m²)
+                  <input
+                    id="areaInput"
+                    type="number"
+                    value="80"
+                    min="20"
+                    max="500"
+                    class="w-28 rounded-lg border border-white/20 bg-white/15 px-3 py-2 text-sm text-white outline-none ring-2 ring-transparent transition focus:ring-amber-300/60"
+                  />
+                </label>
+
+                <label class="grid gap-2 text-xs text-slate">
+                  Horizont (let)
+                  <input
+                    id="horizonInput"
+                    type="range"
+                    value="10"
+                    min="1"
+                    max="25"
+                    class="h-2 w-44 appearance-none rounded-full bg-white/10 accent-amber-300"
+                  />
+                  <span id="horizonValue" class="text-[11px] text-slate">10 let</span>
+                </label>
+
+                <label class="grid gap-2 text-xs text-slate">
+                  Dny v sezóně (22°C)
+                  <input
+                    id="daysInput"
+                    type="number"
+                    value="20"
+                    min="1"
+                    max="233"
+                    class="w-28 rounded-lg border border-white/20 bg-white/15 px-3 py-2 text-sm text-white outline-none ring-2 ring-transparent transition focus:ring-amber-300/60"
+                  />
+                </label>
+
+                <div class="flex flex-wrap items-center gap-4 rounded-lg border border-white/15 bg-slate-950/60 px-4 py-2">
+                  <label class="flex items-center gap-2 text-xs text-slate">
+                    Zateplení stropu
+                    <input
+                      id="ceilingCheck"
+                      type="checkbox"
+                      class="h-4 w-4 rounded border-white/20 bg-white/10 text-amber-300 focus:ring-amber-300/40"
+                    />
+                  </label>
+                  <label class="flex items-center gap-2 text-xs text-slate">
+                    Zateplení stěn
+                    <input
+                      id="wallCheck"
+                      type="checkbox"
+                      class="h-4 w-4 rounded border-white/20 bg-white/10 text-amber-300 focus:ring-amber-300/40"
+                    />
+                  </label>
+                </div>
+
+                <div class="rounded-lg border border-white/15 bg-slate-950/60 px-3 py-2">
+                  <p class="text-xs text-slate">Okna</p>
+                  <div class="mt-1 grid grid-cols-2 gap-1 rounded-lg bg-slate-950/60 p-1 text-xs">
+                    <button
+                      id="windowOldBtn"
+                      class="rounded-md px-3 py-1 text-slate transition hover:text-white"
+                      aria-pressed="false"
+                      type="button"
+                    >
+                      Stará
+                    </button>
+                    <button
+                      id="windowTripleBtn"
+                      class="rounded-md bg-amber-300/30 px-3 py-1 text-white"
+                      aria-pressed="true"
+                      type="button"
+                    >
+                      Trojskla
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <p class="mt-3 text-xs text-slate">
+                Výpočet vychází z českého průměru denostupňů (HDD) a délky topné sezóny.
+              </p>
+            </div>
+
+            <div class="mt-6 h-[420px] rounded-2xl bg-slate-950/60 p-4 md:h-[480px]">
+              <canvas id="roiChart" class="h-full w-full"></canvas>
+            </div>
+          </div>
+
+          <div class="rounded-2xl border border-white/15 bg-slate-900/70 p-5 text-slate-100">
+            <h2 class="font-display text-lg font-semibold">Detailní srovnání</h2>
+            <div class="mt-4 overflow-hidden rounded-2xl">
+              <table class="min-w-full text-left text-sm">
+                <thead class="bg-white/15 text-xs uppercase tracking-[0.2em] text-slate">
+                  <tr>
+                    <th class="px-4 py-3">Zdroj</th>
+                    <th class="px-4 py-3">Investice</th>
+                    <th class="px-4 py-3">Energie po X letech</th>
+                    <th class="px-4 py-3">Servis po X letech</th>
+                    <th class="px-4 py-3">Celkem</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-white/10 text-slate">
+                  <tr>
+                    <td class="px-4 py-3 font-medium text-white">Plynový kotel</td>
+                    <td id="gasInvestCell" class="px-4 py-3">-- Kč</td>
+                    <td id="gasEnergyCell" class="px-4 py-3">-- Kč</td>
+                    <td id="gasServiceCell" class="px-4 py-3">-- Kč</td>
+                    <td id="gasTotalCell" class="px-4 py-3">-- Kč</td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-3 font-medium text-white">Elektrokotel</td>
+                    <td id="electricInvestCell" class="px-4 py-3">-- Kč</td>
+                    <td id="electricEnergyCell" class="px-4 py-3">-- Kč</td>
+                    <td id="electricServiceCell" class="px-4 py-3">-- Kč</td>
+                    <td id="electricTotalCell" class="px-4 py-3">-- Kč</td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-3 font-medium text-white">TČ vzduch-voda</td>
+                    <td id="pumpInvestCell" class="px-4 py-3">-- Kč</td>
+                    <td id="pumpEnergyCell" class="px-4 py-3">-- Kč</td>
+                    <td id="pumpServiceCell" class="px-4 py-3">-- Kč</td>
+                    <td id="pumpTotalCell" class="px-4 py-3">-- Kč</td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-3 font-medium text-white">Klimatizace + bojler</td>
+                    <td id="acInvestCell" class="px-4 py-3">-- Kč</td>
+                    <td id="acEnergyCell" class="px-4 py-3">-- Kč</td>
+                    <td id="acServiceCell" class="px-4 py-3">-- Kč</td>
+                    <td id="acTotalCell" class="px-4 py-3">-- Kč</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="mt-4 flex flex-wrap items-center justify-between gap-3 text-xs text-slate">
+              <div id="insightNotes" class="flex flex-col gap-2 text-xs text-slate">
+                <span>Tipy a upozornění se zobrazí podle zvolených parametrů.</span>
+              </div>
+              <button
+                id="exportCsvBtn"
+                class="rounded-full border border-white/10 px-4 py-2 text-white/80 hover:border-white/30"
+                type="button"
+              >
+                Export CSV
+              </button>
+            </div>
+
+            <div class="mt-6">
+              <h3 class="font-display text-base font-semibold">Plusy a mínusy pro rekreační využití</h3>
+              <div class="mt-4 grid gap-4 md:grid-cols-2">
+                <div class="rounded-2xl border border-white/10 bg-slate-950/60 p-4">
+                  <h4 class="text-sm font-semibold text-white">Plynový kotel</h4>
+                  <p class="mt-2 text-xs text-slate">Plusy: stabilní výkon, snadná regulace, rychlý ohřev.</p>
+                  <p class="mt-2 text-xs text-slate">Mínusy: závislost na přípojce plynu, pravidelný servis, ETS2 příplatek.</p>
+                </div>
+                <div class="rounded-2xl border border-white/10 bg-slate-950/60 p-4">
+                  <h4 class="text-sm font-semibold text-white">Elektrokotel</h4>
+                  <p class="mt-2 text-xs text-slate">Plusy: nízká investice, jednoduchá instalace, tichý provoz.</p>
+                  <p class="mt-2 text-xs text-slate">Mínusy: vysoké provozní náklady při temperování i krátkých pobytech.</p>
+                </div>
+                <div class="rounded-2xl border border-white/10 bg-slate-950/60 p-4">
+                  <h4 class="text-sm font-semibold text-white">TČ vzduch-voda</h4>
+                  <p class="mt-2 text-xs text-slate">Plusy: nízké náklady na provoz, vhodné pro celoroční temperování.</p>
+                  <p class="mt-2 text-xs text-slate">Mínusy: vyšší investice, delší návratnost při sporadických pobytech.</p>
+                </div>
+                <div class="rounded-2xl border border-white/10 bg-slate-950/60 p-4">
+                  <h4 class="text-sm font-semibold text-white">Klimatizace + bojler</h4>
+                  <p class="mt-2 text-xs text-slate">Plusy: rychlé vyhřátí po příjezdu, nižší investice než TČ.</p>
+                  <p class="mt-2 text-xs text-slate">Mínusy: nutnost samostatného TUV, výkon klesá v mrazech.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="mx-auto mt-10 max-w-6xl rounded-2xl border border-white/10 bg-slate-900/60 p-6 text-xs text-slate">
+        <h3 class="font-display text-sm font-semibold text-slate-100">Použité předpoklady</h3>
+        <ul class="mt-3 list-disc space-y-2 pl-5">
+          <li>Výchozí spotřeba: <span id="annualNeedValue" class="text-slate-100">-- kWh/rok</span>.</li>
+          <li>Topný výkon: <span id="heatLossValue" class="text-slate-100">-- kW</span>.</li>
+          <li>Výška místností: 2.6 m.</li>
+          <li>Plzeň – tepelný rozdíl návrhově ΔT = 32 K.</li>
+          <li>Geometrie: půdorys čtverec, obvod = 4 × √plocha.</li>
+          <li>Podíl oken: 20 % plochy obvodových stěn.</li>
+          <li>Součinitele prostupu tepla (U): stěny 1.45 / 0.25, strop 1.20 / 0.18, okna 2.40 / 0.85.</li>
+          <li>Topná sezóna: 233 dní, HDD 3848 °D (CZ průměr), referenční teplota 21 °C.</li>
+          <li>Teploty: při přítomnosti 22 °C, mimo pobyt temperování 10 °C.</li>
+          <li>Ekvivalentní hodiny = (denostupně × 24) / 32 K.</li>
+          <li>TUV (DHW): fixních 1800 kWh/rok (AC bez SCOP, ostatní dle SCOP/účinnosti).</li>
+          <li>Elektrokotel: investice zahrnuje bojler +10 000 Kč.</li>
+          <li>Růst cen energií: 4 % ročně.</li>
+          <li>Plyn: od 2. roku +30 % ETS2 příplatek na energii.</li>
+          <li>Ceny energií/účinnosti/servis dle nastavených zdrojů v aplikaci.</li>
+        </ul>
+      </footer>
+    </main>
+
+    <script>
+      lucide.createIcons();
+
+      const areaInput = document.getElementById("areaInput");
+      const ceilingCheck = document.getElementById("ceilingCheck");
+      const wallCheck = document.getElementById("wallCheck");
+      const windowOldBtn = document.getElementById("windowOldBtn");
+      const windowTripleBtn = document.getElementById("windowTripleBtn");
+      const horizonInput = document.getElementById("horizonInput");
+      const horizonValue = document.getElementById("horizonValue");
+      const daysInput = document.getElementById("daysInput");
+      const annualNeedValue = document.getElementById("annualNeedValue");
+      const heatLossValue = document.getElementById("heatLossValue");
+      const gasInvestCell = document.getElementById("gasInvestCell");
+      const gasEnergyCell = document.getElementById("gasEnergyCell");
+      const gasServiceCell = document.getElementById("gasServiceCell");
+      const gasTotalCell = document.getElementById("gasTotalCell");
+      const electricInvestCell = document.getElementById("electricInvestCell");
+      const electricEnergyCell = document.getElementById("electricEnergyCell");
+      const electricServiceCell = document.getElementById("electricServiceCell");
+      const electricTotalCell = document.getElementById("electricTotalCell");
+      const pumpInvestCell = document.getElementById("pumpInvestCell");
+      const pumpEnergyCell = document.getElementById("pumpEnergyCell");
+      const pumpServiceCell = document.getElementById("pumpServiceCell");
+      const pumpTotalCell = document.getElementById("pumpTotalCell");
+      const acInvestCell = document.getElementById("acInvestCell");
+      const acEnergyCell = document.getElementById("acEnergyCell");
+      const acServiceCell = document.getElementById("acServiceCell");
+      const acTotalCell = document.getElementById("acTotalCell");
+      const chartCanvas = document.getElementById("roiChart");
+      const insightNotes = document.getElementById("insightNotes");
+      const exportCsvBtn = document.getElementById("exportCsvBtn");
+
+      const U_VALUES = {
+        wall: { default: 1.45, insulated: 0.25 },
+        ceiling: { default: 1.2, insulated: 0.18 },
+        window: { old: 2.4, triple: 0.85 },
+      };
+      const ENERGY_GROWTH = 0.04;
+      const DHW_NEED = 1800;
+      const BOILER_INVEST_ELECTRIC = 10000;
+      const HEATING_DEGREE_DAYS = 3848;
+      const HEATING_DAYS = 233;
+      const HDD_BASE_TEMP = 21;
+      const GAS_ETS2_SURCHARGE = 0.3;
+      const GAS_ETS2_START_YEAR = 2;
+      const HEAT_SOURCES = [
+        {
+          key: "gas",
+          label: "Plynový kotel",
+          investment: 100000,
+          price: 2.5,
+          efficiency: 0.95,
+          service: 4000,
+        },
+        {
+          key: "electric",
+          label: "Elektrokotel",
+          investment: 30000 + BOILER_INVEST_ELECTRIC,
+          price: 4.5,
+          efficiency: 0.99,
+          service: 500,
+        },
+        {
+          key: "pump",
+          label: "TČ vzduch-voda",
+          investment: 269686,
+          price: 4.5,
+          scop: 3.0,
+          service: 2500,
+        },
+        {
+          key: "ac",
+          label: "Klimatizace + bojler",
+          investment: 144737,
+          price: 4.5,
+          scop: 3.1,
+          service: 2500,
+        },
+      ];
+      const CHART_COLORS = {
+        gas: "#fbbf24",
+        electric: "#60a5fa",
+        pump: "#34d399",
+        ac: "#f472b6",
+      };
+      let roiChart = null;
+
+      function formatNumber(value, decimals = 1) {
+        return value.toLocaleString("cs-CZ", {
+          minimumFractionDigits: decimals,
+          maximumFractionDigits: decimals,
+        });
+      }
+
+      function calculateHeatLoss({ area, insulatedWall, insulatedCeiling, windowType }) {
+        const height = 2.6;
+        const deltaT = 32;
+        const side = Math.sqrt(area);
+        const perimeter = side * 4;
+        const wallArea = perimeter * height;
+        const windowArea = wallArea * 0.2;
+        const opaqueWallArea = wallArea - windowArea;
+        const ceilingArea = area;
+
+        const uWall = insulatedWall ? U_VALUES.wall.insulated : U_VALUES.wall.default;
+        const uCeiling = insulatedCeiling ? U_VALUES.ceiling.insulated : U_VALUES.ceiling.default;
+        const uWindow = windowType === "old" ? U_VALUES.window.old : U_VALUES.window.triple;
+
+        const wallLoss = uWall * opaqueWallArea * deltaT;
+        const ceilingLoss = uCeiling * ceilingArea * deltaT;
+        const windowLoss = uWindow * windowArea * deltaT;
+
+        return (wallLoss + ceilingLoss + windowLoss) / 1000;
+      }
+
+      function getAnnualEnergyNeed(losskW, daysAtHome) {
+        const days = Math.min(Math.max(1, daysAtHome), HEATING_DAYS);
+        const avgOutdoor = HDD_BASE_TEMP - HEATING_DEGREE_DAYS / HEATING_DAYS;
+        const deltaHome = Math.max(22 - avgOutdoor, 0);
+        const deltaAway = Math.max(10 - avgOutdoor, 0);
+        const degreeDays = days * deltaHome + (HEATING_DAYS - days) * deltaAway;
+        const equivalentHours = (degreeDays * 24) / 32;
+        return losskW * equivalentHours;
+      }
+
+      function getAdjustedConsumption(annualNeed, source) {
+        const totalNeed = annualNeed + DHW_NEED;
+        if (source.scop) {
+          if (source.key === "ac") {
+            return annualNeed / source.scop + DHW_NEED;
+          }
+          return totalNeed / source.scop;
+        }
+        return totalNeed / source.efficiency;
+      }
+
+      function buildCostSeries({ annualNeed, years, source }) {
+        const adjustedNeed = getAdjustedConsumption(annualNeed, source);
+        const series = [
+          { year: 0, total: source.investment, operating: 0, energy: 0, service: 0 },
+        ];
+        let running = source.investment;
+        let energyRunning = 0;
+        let serviceRunning = 0;
+        for (let year = 1; year <= years; year += 1) {
+          const growth = Math.pow(1 + ENERGY_GROWTH, year);
+          const gasEts2Multiplier =
+            source.key === "gas" && year >= GAS_ETS2_START_YEAR ? 1 + GAS_ETS2_SURCHARGE : 1;
+          const annualEnergyCost = adjustedNeed * source.price * gasEts2Multiplier * growth;
+          const annualService = source.service * growth;
+          energyRunning += annualEnergyCost;
+          serviceRunning += annualService;
+          running += annualEnergyCost + annualService;
+          series.push({
+            year,
+            total: running,
+            operating: running - source.investment,
+            energy: energyRunning,
+            service: serviceRunning,
+          });
+        }
+        return series;
+      }
+
+      function formatCurrency(value) {
+        return value.toLocaleString("cs-CZ", {
+          style: "currency",
+          currency: "CZK",
+          maximumFractionDigits: 0,
+        });
+      }
+
+      function updateEconomics(annualNeed, years) {
+        const seriesByKey = {};
+        HEAT_SOURCES.forEach((source) => {
+          const series = buildCostSeries({ annualNeed, years, source });
+          seriesByKey[source.key] = series;
+          const last = series[series.length - 1];
+          const energy = last ? last.energy : 0;
+          const service = last ? last.service : 0;
+          const total = last ? last.total : source.investment;
+
+          if (source.key === "gas") {
+            gasInvestCell.textContent = formatCurrency(source.investment);
+            gasEnergyCell.textContent = formatCurrency(energy);
+            gasServiceCell.textContent = formatCurrency(service);
+            gasTotalCell.textContent = formatCurrency(total);
+          }
+          if (source.key === "electric") {
+            electricInvestCell.textContent = formatCurrency(source.investment);
+            electricEnergyCell.textContent = formatCurrency(energy);
+            electricServiceCell.textContent = formatCurrency(service);
+            electricTotalCell.textContent = formatCurrency(total);
+          }
+          if (source.key === "pump") {
+            pumpInvestCell.textContent = formatCurrency(source.investment);
+            pumpEnergyCell.textContent = formatCurrency(energy);
+            pumpServiceCell.textContent = formatCurrency(service);
+            pumpTotalCell.textContent = formatCurrency(total);
+          }
+          if (source.key === "ac") {
+            acInvestCell.textContent = formatCurrency(source.investment);
+            acEnergyCell.textContent = formatCurrency(energy);
+            acServiceCell.textContent = formatCurrency(service);
+            acTotalCell.textContent = formatCurrency(total);
+          }
+        });
+
+        return seriesByKey;
+      }
+
+      function buildNotes({ insulatedCeiling }) {
+        const notes = [];
+        if (!insulatedCeiling) {
+          notes.push("⚠️ Doporučení: Zateplení stropu vatou (cca 15k Kč) zkrátí návratnost TČ o 3 roky.");
+        }
+        notes.push("❗ Varování: Elektrokotel je u nezatepleného objektu extrémně rizikový.");
+        return notes;
+      }
+
+      function updateNotes(params) {
+        const notes = buildNotes(params);
+        insightNotes.innerHTML = "";
+        notes.forEach((note) => {
+          const row = document.createElement("span");
+          row.textContent = note;
+          insightNotes.appendChild(row);
+        });
+      }
+
+      function exportCsv(seriesByKey, years) {
+        const headers = ["Zdroj", "Investice", "Naklady_po_letech", "Celkem"];
+        const rows = HEAT_SOURCES.map((source) => {
+          const series = seriesByKey[source.key] || [];
+          const last = series[series.length - 1];
+          const operating = last ? Math.round(last.operating) : 0;
+          const total = last ? Math.round(last.total) : source.investment;
+          return [
+            source.label,
+            source.investment,
+            operating,
+            total,
+          ];
+        });
+        const lines = [headers.join(";"), ...rows.map((row) => row.join(";"))];
+        const blob = new Blob([lines.join("\n")], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `heating-roi-${years}let.csv`;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+      }
+
+      function buildChart(labels, datasets) {
+        roiChart = new Chart(chartCanvas, {
+          type: "line",
+          data: { labels, datasets },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: { mode: "index", intersect: false },
+            plugins: {
+              legend: {
+                labels: { color: "#e2e8f0" },
+              },
+              tooltip: {
+                callbacks: {
+                  label: (ctx) => {
+                    const value = ctx.parsed.y ?? 0;
+                    return `${ctx.dataset.label}: ${formatCurrency(value)}`;
+                  },
+                },
+              },
+            },
+            scales: {
+              x: {
+                ticks: { color: "#cbd5f5" },
+                grid: { color: "rgba(148, 163, 184, 0.2)" },
+              },
+              y: {
+                ticks: {
+                  color: "#cbd5f5",
+                  callback: (value) => `${(value / 1000).toFixed(0)}k`,
+                },
+                grid: { color: "rgba(148, 163, 184, 0.2)" },
+              },
+            },
+          },
+        });
+      }
+
+      function updateChart(seriesByKey, years) {
+        const labels = Array.from({ length: years + 1 }, (_, i) => `${i}`);
+        const datasets = HEAT_SOURCES.map((source) => ({
+          label: source.label,
+          data: (seriesByKey[source.key] || []).map((point) => point.total),
+          borderColor: CHART_COLORS[source.key],
+          backgroundColor: CHART_COLORS[source.key] + "33",
+          tension: 0.25,
+          borderWidth: 2,
+          pointRadius: 0,
+          fill: true,
+        }));
+
+        if (!roiChart) {
+          buildChart(labels, datasets);
+          return;
+        }
+
+        roiChart.data.labels = labels;
+        roiChart.data.datasets.forEach((dataset, index) => {
+          dataset.data = datasets[index].data;
+        });
+        roiChart.update("none");
+      }
+
+      function setWindowType(type) {
+        const isOld = type === "old";
+        windowOldBtn.classList.toggle("bg-amber-300/30", isOld);
+        windowOldBtn.classList.toggle("text-white", isOld);
+        windowOldBtn.classList.toggle("text-slate", !isOld);
+        windowOldBtn.setAttribute("aria-pressed", String(isOld));
+
+        windowTripleBtn.classList.toggle("bg-amber-300/30", !isOld);
+        windowTripleBtn.classList.toggle("text-white", !isOld);
+        windowTripleBtn.classList.toggle("text-slate", isOld);
+        windowTripleBtn.setAttribute("aria-pressed", String(!isOld));
+
+        windowOldBtn.dataset.active = isOld ? "true" : "false";
+      }
+
+      function getWindowType() {
+        return windowOldBtn.dataset.active === "true" ? "old" : "triple";
+      }
+
+      function updatePhysicsSummary() {
+        const area = Math.max(20, Number(areaInput.value || 0));
+        const insulatedWall = wallCheck.checked;
+        const insulatedCeiling = ceilingCheck.checked;
+        const windowType = getWindowType();
+        const loss = calculateHeatLoss({ area, insulatedWall, insulatedCeiling, windowType });
+        const daysAtHome = Math.max(1, Number(daysInput.value || 0));
+        const annual = getAnnualEnergyNeed(loss, daysAtHome);
+
+        heatLossValue.textContent = `${formatNumber(loss, 2)} kW`;
+        annualNeedValue.textContent = `${formatNumber(annual, 0)} kWh/rok`;
+        const years = Number(horizonInput.value);
+        const seriesByKey = updateEconomics(annual, years);
+        updateChart(seriesByKey, years);
+        updateNotes({ insulatedCeiling });
+      }
+
+      function updateHorizonLabel() {
+        const years = Number(horizonInput.value);
+        horizonValue.textContent = `${years} ${years === 1 ? "rok" : years < 5 ? "roky" : "let"}`;
+      }
+
+      function handleInputChange() {
+        updateHorizonLabel();
+        updatePhysicsSummary();
+      }
+
+      windowOldBtn.addEventListener("click", () => {
+        setWindowType("old");
+        updatePhysicsSummary();
+      });
+
+      windowTripleBtn.addEventListener("click", () => {
+        setWindowType("triple");
+        updatePhysicsSummary();
+      });
+
+      [areaInput, ceilingCheck, wallCheck, horizonInput, daysInput].forEach((input) => {
+        input.addEventListener("input", handleInputChange);
+      });
+
+      exportCsvBtn.addEventListener("click", () => {
+        const area = Math.max(20, Number(areaInput.value || 0));
+        const insulatedWall = wallCheck.checked;
+        const insulatedCeiling = ceilingCheck.checked;
+        const windowType = getWindowType();
+        const loss = calculateHeatLoss({ area, insulatedWall, insulatedCeiling, windowType });
+        const daysAtHome = Math.max(1, Number(daysInput.value || 0));
+        const annual = getAnnualEnergyNeed(loss, daysAtHome);
+        const years = Number(horizonInput.value);
+        const seriesByKey = updateEconomics(annual, years);
+        exportCsv(seriesByKey, years);
+      });
+
+      setWindowType("triple");
+      handleInputChange();
+    </script>
+  </body>
+</html>
