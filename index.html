@@ -259,9 +259,7 @@
               </table>
             </div>
             <div class="mt-4 flex flex-wrap items-center justify-between gap-3 text-xs text-slate">
-              <div id="insightNotes" class="flex flex-col gap-2 text-xs text-slate">
-                <span data-i18n="notes_default">Tipy a upozornění se zobrazí podle zvolených parametrů.</span>
-              </div>
+              <div id="insightNotes" class="flex flex-col gap-2 text-xs text-slate"></div>
               <button
                 id="exportCsvBtn"
                 class="rounded-full border border-white/10 px-4 py-2 text-white/80 hover:border-white/30"
@@ -371,7 +369,6 @@
           src_electric: "Elektrokotel",
           src_pump: "TČ vzduch-voda",
           src_ac: "Klimatizace + bojler",
-          notes_default: "Tipy a upozornění se zobrazí podle zvolených parametrů.",
           export_csv: "Export CSV",
           pros_title: "Plusy a mínusy pro rekreační využití",
           pros_gas_title: "Plynový kotel",
@@ -414,9 +411,6 @@
           assumption_prices: "Ceny energií/účinnosti/servis dle nastavených zdrojů v aplikaci.",
           assumption_fx: "Směnné kurzy: 1 EUR = 24.693 CZK, 1 USD = 21.914 CZK (průměr 2025).",
           assumption_sources: "Zdroje:",
-          note_ceiling:
-            "⚠️ Doporučení: Zateplení stropu vatou (cca 15k Kč) zkrátí návratnost TČ o 3 roky.",
-          note_electric: "❗ Varování: Elektrokotel je u nezatepleného objektu extrémně rizikový.",
           csv_source: "Zdroj",
           csv_invest: "Investice",
           csv_energy: "Energie_po_letech",
@@ -451,7 +445,6 @@
           src_electric: "Electric boiler",
           src_pump: "Air-to-water heat pump",
           src_ac: "AC + boiler",
-          notes_default: "Tips and warnings appear based on selected parameters.",
           export_csv: "Export CSV",
           pros_title: "Pros & Cons for Cottage Use",
           pros_gas_title: "Gas boiler",
@@ -494,10 +487,6 @@
           assumption_prices: "Energy prices/efficiency/service per configured sources.",
           assumption_fx: "FX rates: 1 EUR = 24.693 CZK, 1 USD = 21.914 CZK (2025 average).",
           assumption_sources: "Sources:",
-          note_ceiling:
-            "⚠️ Recommendation: Attic insulation (~15k CZK) shortens HP payback by 3 years.",
-          note_electric:
-            "❗ Warning: Electric boiler is extremely risky for an uninsulated building.",
           csv_source: "Source",
           csv_invest: "Investment",
           csv_energy: "Energy_after_years",
@@ -840,25 +829,6 @@
         return seriesByKey;
       }
 
-      function buildNotes({ insulatedCeiling }) {
-        const notes = [];
-        if (!insulatedCeiling) {
-          notes.push(t("note_ceiling"));
-        }
-        notes.push(t("note_electric"));
-        return notes;
-      }
-
-      function updateNotes(params) {
-        const notes = buildNotes(params);
-        insightNotes.innerHTML = "";
-        notes.forEach((note) => {
-          const row = document.createElement("span");
-          row.textContent = note;
-          insightNotes.appendChild(row);
-        });
-      }
-
       function exportCsv(seriesByKey, years) {
         const headers = [
           t("csv_source"),
@@ -976,7 +946,6 @@
         const years = Number(horizonInput.value);
         const seriesByKey = updateEconomics(annual, years);
         updateChart(seriesByKey, years);
-        updateNotes({ insulatedCeiling });
       }
 
       function writeParams() {
