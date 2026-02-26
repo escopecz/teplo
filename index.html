@@ -54,13 +54,29 @@
             <i data-lucide="flame" class="h-5 w-5"></i>
           </span>
           <div>
-            <p class="text-sm uppercase tracking-[0.3em] text-amber-100/70">Heating ROI Calculator</p>
-            <h1 class="font-display text-3xl font-semibold tracking-tight md:text-4xl">
+            <p class="text-sm uppercase tracking-[0.3em] text-amber-100/70" data-i18n="brand">
+              Heating ROI Calculator
+            </p>
+            <h1 class="font-display text-3xl font-semibold tracking-tight md:text-4xl" data-i18n="hero_title">
               Porovnání návratnosti zdrojů tepla
             </h1>
           </div>
+          <div class="ml-auto flex items-center gap-2">
+            <button
+              id="langToggle"
+              class="rounded-full border border-amber-200/40 px-3 py-1 text-xs text-amber-100/80 hover:border-amber-200/80"
+              type="button"
+            >
+              EN
+            </button>
+            <div class="flex items-center gap-1 rounded-full border border-amber-200/30 bg-amber-200/10 p-1 text-[10px] uppercase tracking-[0.2em] text-amber-100/80">
+              <button id="currencyCzk" class="rounded-full px-2 py-1 text-amber-100/90" type="button">CZK</button>
+              <button id="currencyEur" class="rounded-full px-2 py-1 text-amber-100/60" type="button">EUR</button>
+              <button id="currencyUsd" class="rounded-full px-2 py-1 text-amber-100/60" type="button">USD</button>
+            </div>
+          </div>
         </div>
-        <p class="mt-4 max-w-3xl text-sm text-slate">
+        <p class="mt-4 max-w-3xl text-sm text-slate" data-i18n="hero_subtitle">
           Získejte přehled o investici, provozních nákladech a vývoji ceny v čase. Kalkulačka využívá
           fyzikální i ekonomický model a reaguje na změny vstupů v reálném čase.
         </p>
@@ -73,14 +89,16 @@
           <div class="rounded-2xl border border-white/15 bg-slate-900/70 p-6 text-slate-100">
             <div class="flex flex-wrap items-center justify-between gap-4">
               <div>
-                <h2 class="font-display text-xl font-semibold">Vývoj nákladů v čase</h2>
-                <p class="mt-1 text-sm text-slate">Porovnání všech zdrojů napříč celým horizontem.</p>
+                <h2 class="font-display text-xl font-semibold" data-i18n="chart_title">Vývoj nákladů v čase</h2>
+                <p class="mt-1 text-sm text-slate" data-i18n="chart_subtitle">
+                  Porovnání všech zdrojů napříč celým horizontem.
+                </p>
               </div>
             </div>
             <div class="mt-5 rounded-2xl border border-white/15 bg-slate-950/60 p-4">
               <div class="grid gap-4 lg:flex lg:flex-wrap lg:items-end lg:gap-6">
                 <label class="grid gap-2 text-xs text-slate">
-                  Plocha (m²)
+                  <span data-i18n="label_area">Plocha (m²)</span>
                   <input
                     id="areaInput"
                     type="number"
@@ -92,7 +110,7 @@
                 </label>
 
                 <label class="grid gap-2 text-xs text-slate">
-                  Horizont (let)
+                  <span data-i18n="label_horizon">Horizont (let)</span>
                   <input
                     id="horizonInput"
                     type="number"
@@ -104,20 +122,20 @@
                 </label>
 
                 <label class="grid gap-2 text-xs text-slate">
-                  Dny v sezóně (22°C)
+                  <span data-i18n="label_days">Dny v sezóně (22°C)</span>
                   <input
                     id="daysInput"
                     type="number"
                     value="20"
                     min="1"
-                    max="233"
+                    max="236"
                     class="w-full lg:w-28 rounded-lg border border-white/20 bg-white/15 px-3 py-2 text-sm text-white outline-none ring-2 ring-transparent transition focus:ring-amber-300/60"
                   />
                 </label>
 
                 <div class="grid gap-3 sm:flex sm:flex-wrap sm:items-center">
                   <label class="flex items-center gap-2 text-xs text-slate">
-                    Zateplení stropu
+                    <span data-i18n="label_ceiling">Zateplení stropu</span>
                     <input
                       id="ceilingCheck"
                       type="checkbox"
@@ -125,7 +143,7 @@
                     />
                   </label>
                   <label class="flex items-center gap-2 text-xs text-slate">
-                    Zateplení stěn
+                    <span data-i18n="label_walls">Zateplení stěn</span>
                     <input
                       id="wallCheck"
                       type="checkbox"
@@ -133,7 +151,7 @@
                     />
                   </label>
                   <label class="flex items-center gap-2 text-xs text-slate">
-                  Trojskla okna
+                  <span data-i18n="label_windows">Trojskla okna</span>
                   <input
                     id="windowTripleCheck"
                     type="checkbox"
@@ -145,7 +163,7 @@
               </div>
               <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4 min-w-0">
                 <label class="grid gap-2 text-xs text-slate">
-                  Investice plyn (Kč)
+                  <span data-i18n="label_invest_gas">Investice plyn (Kč)</span>
                   <input
                     id="investGasInput"
                     type="number"
@@ -155,7 +173,7 @@
                   />
                 </label>
                 <label class="grid gap-2 text-xs text-slate">
-                  Investice elektro (Kč)
+                  <span data-i18n="label_invest_electric">Investice elektro (Kč)</span>
                   <input
                     id="investElectricInput"
                     type="number"
@@ -165,7 +183,7 @@
                   />
                 </label>
                 <label class="grid gap-2 text-xs text-slate">
-                  Investice TČ (Kč)
+                  <span data-i18n="label_invest_pump">Investice TČ (Kč)</span>
                   <input
                     id="investPumpInput"
                     type="number"
@@ -175,7 +193,7 @@
                   />
                 </label>
                 <label class="grid gap-2 text-xs text-slate">
-                  Investice klima (Kč)
+                  <span data-i18n="label_invest_ac">Investice klima (Kč)</span>
                   <input
                     id="investAcInput"
                     type="number"
@@ -185,7 +203,7 @@
                   />
                 </label>
               </div>
-              <p class="mt-3 text-xs text-slate">
+              <p class="mt-3 text-xs text-slate" data-i18n="note_hdd">
                 Výpočet vychází z českého průměru denostupňů (HDD) a délky topné sezóny.
               </p>
             </div>
@@ -196,42 +214,42 @@
           </div>
 
           <div class="rounded-2xl border border-white/15 bg-slate-900/70 p-5 text-slate-100">
-            <h2 class="font-display text-lg font-semibold">Detailní srovnání</h2>
+            <h2 class="font-display text-lg font-semibold" data-i18n="table_title">Detailní srovnání</h2>
             <div class="mt-4 overflow-x-auto max-w-full">
               <table class="min-w-[720px] w-full text-left text-sm">
                 <thead class="bg-white/15 text-xs uppercase tracking-[0.2em] text-slate">
                   <tr>
-                    <th class="px-4 py-3">Zdroj</th>
-                    <th class="px-4 py-3">Investice</th>
-                    <th class="px-4 py-3">Energie po X letech</th>
-                    <th class="px-4 py-3">Servis po X letech</th>
-                    <th class="px-4 py-3">Celkem</th>
+                    <th class="px-4 py-3" data-i18n="th_source">Zdroj</th>
+                    <th class="px-4 py-3" data-i18n="th_invest">Investice</th>
+                    <th class="px-4 py-3" data-i18n="th_energy">Energie po X letech</th>
+                    <th class="px-4 py-3" data-i18n="th_service">Servis po X letech</th>
+                    <th class="px-4 py-3" data-i18n="th_total">Celkem</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-white/10 text-slate">
                   <tr>
-                    <td class="px-4 py-3 font-medium text-white">Plynový kotel</td>
+                    <td class="px-4 py-3 font-medium text-white" data-i18n="src_gas">Plynový kotel</td>
                     <td id="gasInvestCell" class="px-4 py-3">-- Kč</td>
                     <td id="gasEnergyCell" class="px-4 py-3">-- Kč</td>
                     <td id="gasServiceCell" class="px-4 py-3">-- Kč</td>
                     <td id="gasTotalCell" class="px-4 py-3">-- Kč</td>
                   </tr>
                   <tr>
-                    <td class="px-4 py-3 font-medium text-white">Elektrokotel</td>
+                    <td class="px-4 py-3 font-medium text-white" data-i18n="src_electric">Elektrokotel</td>
                     <td id="electricInvestCell" class="px-4 py-3">-- Kč</td>
                     <td id="electricEnergyCell" class="px-4 py-3">-- Kč</td>
                     <td id="electricServiceCell" class="px-4 py-3">-- Kč</td>
                     <td id="electricTotalCell" class="px-4 py-3">-- Kč</td>
                   </tr>
                   <tr>
-                    <td class="px-4 py-3 font-medium text-white">TČ vzduch-voda</td>
+                    <td class="px-4 py-3 font-medium text-white" data-i18n="src_pump">TČ vzduch-voda</td>
                     <td id="pumpInvestCell" class="px-4 py-3">-- Kč</td>
                     <td id="pumpEnergyCell" class="px-4 py-3">-- Kč</td>
                     <td id="pumpServiceCell" class="px-4 py-3">-- Kč</td>
                     <td id="pumpTotalCell" class="px-4 py-3">-- Kč</td>
                   </tr>
                   <tr>
-                    <td class="px-4 py-3 font-medium text-white">Klimatizace + bojler</td>
+                    <td class="px-4 py-3 font-medium text-white" data-i18n="src_ac">Klimatizace + bojler</td>
                     <td id="acInvestCell" class="px-4 py-3">-- Kč</td>
                     <td id="acEnergyCell" class="px-4 py-3">-- Kč</td>
                     <td id="acServiceCell" class="px-4 py-3">-- Kč</td>
@@ -242,39 +260,39 @@
             </div>
             <div class="mt-4 flex flex-wrap items-center justify-between gap-3 text-xs text-slate">
               <div id="insightNotes" class="flex flex-col gap-2 text-xs text-slate">
-                <span>Tipy a upozornění se zobrazí podle zvolených parametrů.</span>
+                <span data-i18n="notes_default">Tipy a upozornění se zobrazí podle zvolených parametrů.</span>
               </div>
               <button
                 id="exportCsvBtn"
                 class="rounded-full border border-white/10 px-4 py-2 text-white/80 hover:border-white/30"
                 type="button"
               >
-                Export CSV
+                <span data-i18n="export_csv">Export CSV</span>
               </button>
             </div>
 
             <div class="mt-6">
-              <h3 class="font-display text-base font-semibold">Plusy a mínusy pro rekreační využití</h3>
+              <h3 class="font-display text-base font-semibold" data-i18n="pros_title">Plusy a mínusy pro rekreační využití</h3>
               <div class="mt-4 grid gap-4 md:grid-cols-2">
                 <div class="rounded-2xl border border-white/10 bg-slate-950/60 p-4">
-                  <h4 class="text-sm font-semibold text-white">Plynový kotel</h4>
-                  <p class="mt-2 text-xs text-slate">Plusy: stabilní výkon, snadná regulace, rychlý ohřev.</p>
-                  <p class="mt-2 text-xs text-slate">Mínusy: závislost na přípojce plynu, pravidelný servis, ETS2 příplatek.</p>
+                  <h4 class="text-sm font-semibold text-white" data-i18n="pros_gas_title">Plynový kotel</h4>
+                  <p class="mt-2 text-xs text-slate" data-i18n="pros_gas_plus">Plusy: stabilní výkon, snadná regulace, rychlý ohřev.</p>
+                  <p class="mt-2 text-xs text-slate" data-i18n="pros_gas_minus">Mínusy: závislost na přípojce plynu, pravidelný servis, ETS2 příplatek.</p>
                 </div>
                 <div class="rounded-2xl border border-white/10 bg-slate-950/60 p-4">
-                  <h4 class="text-sm font-semibold text-white">Elektrokotel + boiler</h4>
-                  <p class="mt-2 text-xs text-slate">Plusy: nízká investice, jednoduchá instalace, tichý provoz.</p>
-                  <p class="mt-2 text-xs text-slate">Mínusy: vysoké provozní náklady při temperování i krátkých pobytech.</p>
+                  <h4 class="text-sm font-semibold text-white" data-i18n="pros_electric_title">Elektrokotel + boiler</h4>
+                  <p class="mt-2 text-xs text-slate" data-i18n="pros_electric_plus">Plusy: nízká investice, jednoduchá instalace, tichý provoz.</p>
+                  <p class="mt-2 text-xs text-slate" data-i18n="pros_electric_minus">Mínusy: vysoké provozní náklady při temperování i krátkých pobytech.</p>
                 </div>
                 <div class="rounded-2xl border border-white/10 bg-slate-950/60 p-4">
-                  <h4 class="text-sm font-semibold text-white">TČ vzduch-voda + boiler</h4>
-                  <p class="mt-2 text-xs text-slate">Plusy: nízké náklady na provoz, vhodné pro celoroční temperování.</p>
-                  <p class="mt-2 text-xs text-slate">Mínusy: vyšší investice, delší náběh při sporadických pobytech.</p>
+                  <h4 class="text-sm font-semibold text-white" data-i18n="pros_pump_title">TČ vzduch-voda + boiler</h4>
+                  <p class="mt-2 text-xs text-slate" data-i18n="pros_pump_plus">Plusy: nízké náklady na provoz, vhodné pro celoroční temperování.</p>
+                  <p class="mt-2 text-xs text-slate" data-i18n="pros_pump_minus">Mínusy: vyšší investice, delší náběh při sporadických pobytech.</p>
                 </div>
                 <div class="rounded-2xl border border-white/10 bg-slate-950/60 p-4">
-                  <h4 class="text-sm font-semibold text-white">Klimatizace + boiler</h4>
-                  <p class="mt-2 text-xs text-slate">Plusy: rychlé vyhřátí po příjezdu, nižší investice než TČ, funkce odvlhčování.</p>
-                  <p class="mt-2 text-xs text-slate">Mínusy: nutnost samostatného TUV, výkon klesá v mrazech.</p>
+                  <h4 class="text-sm font-semibold text-white" data-i18n="pros_ac_title">Klimatizace + boiler</h4>
+                  <p class="mt-2 text-xs text-slate" data-i18n="pros_ac_plus">Plusy: rychlé vyhřátí po příjezdu, nižší investice než TČ, funkce odvlhčování.</p>
+                  <p class="mt-2 text-xs text-slate" data-i18n="pros_ac_minus">Mínusy: nutnost samostatného TUV, výkon klesá v mrazech.</p>
                 </div>
               </div>
             </div>
@@ -283,29 +301,36 @@
       </section>
 
       <footer class="mx-auto mt-10 max-w-6xl rounded-2xl border border-white/10 bg-slate-900/60 p-6 text-xs text-slate">
-        <h3 class="font-display text-sm font-semibold text-slate-100">Použité předpoklady</h3>
+        <h3 class="font-display text-sm font-semibold text-slate-100" data-i18n="assumptions_title">
+          Použité předpoklady
+        </h3>
         <ul class="mt-3 list-disc space-y-2 pl-5">
-          <li>Výchozí spotřeba: <span id="annualNeedValue" class="text-slate-100">-- kWh/rok</span>.</li>
-          <li>Topný výkon: <span id="heatLossValue" class="text-slate-100">-- kW</span>.</li>
-          <li>Plocha: 80 m².</li>
-          <li>Výška místností: 2.6 m, vnější rozměry: 10 × 8.45 m.</li>
-          <li>Plzeň – tepelný rozdíl návrhově ΔT = 32 K.</li>
-          <li>Vnější zdi: plné cihly, šířka 45 cm.</li>
-          <li>Podlaha: 1/2 domu podsklepeno, nevytápěno; beton + většinou dlažba.</li>
-          <li>Strop/půda: volná půda; omítka na rákosu, podbití, dřevěné trámy, prkna, 10 cm škvára, 2 cm beton.</li>
-          <li>Okna a dveře: 5× (900×1200 mm), 1× balkonové dveře, 1× vstupní bezpečnostní dveře, 1× (500×500 mm).</li>
-          <li>Součinitele prostupu tepla (U): stěny 1.45 / 0.25, strop 1.20 / 0.18, okna 2.40 / 0.85.</li>
-          <li>SCOP: TČ vzduch-voda 3.0, Klimatizace + bojler 3.1.</li>
-          <li>Topná sezóna: průměr 236 topných dnů (dekáda), HDD 3848 °D (2013–2023), referenční teplota 21 °C.</li>
-          <li>Teploty: při přítomnosti 22 °C, mimo pobyt temperování 10 °C.</li>
-          <li>Ekvivalentní hodiny = (denostupně × 24) / 32 K.</li>
-          <li>TUV (DHW): fixních 1800 kWh/rok (AC bez SCOP, ostatní dle SCOP/účinnosti).</li>
-          <li>Elektrokotel: investice zahrnuje bojler +10 000 Kč.</li>
-          <li>Růst cen energií: 4 % ročně.</li>
-          <li>Plyn: od 2. roku +30 % ETS2 příplatek na energii.</li>
-          <li>Ceny energií/účinnosti/servis dle nastavených zdrojů v aplikaci.</li>
+          <li data-i18n-html="assumption_consumption">
+            Výchozí spotřeba: <span id="annualNeedValue" class="text-slate-100">-- kWh/rok</span>.
+          </li>
+          <li data-i18n-html="assumption_power">
+            Topný výkon: <span id="heatLossValue" class="text-slate-100">-- kW</span>.
+          </li>
+          <li data-i18n="assumption_area">Plocha: 80 m².</li>
+          <li data-i18n="assumption_dimensions">Výška místností: 2.6 m, vnější rozměry: 10 × 8.45 m.</li>
+          <li data-i18n="assumption_city">Plzeň – tepelný rozdíl návrhově ΔT = 32 K.</li>
+          <li data-i18n="assumption_walls">Vnější zdi: plné cihly, šířka 45 cm.</li>
+          <li data-i18n="assumption_floor">Podlaha: 1/2 domu podsklepeno, nevytápěno; beton + většinou dlažba.</li>
+          <li data-i18n="assumption_roof">Strop/půda: volná půda; omítka na rákosu, podbití, dřevěné trámy, prkna, 10 cm škvára, 2 cm beton.</li>
+          <li data-i18n="assumption_windows">Okna a dveře: 5× (900×1200 mm), 1× balkonové dveře, 1× vstupní bezpečnostní dveře, 1× (500×500 mm).</li>
+          <li data-i18n="assumption_uvalues">Součinitele prostupu tepla (U): stěny 1.45 / 0.25, strop 1.20 / 0.18, okna 2.40 / 0.85.</li>
+          <li data-i18n="assumption_scop">SCOP: TČ vzduch-voda 3.0, Klimatizace + bojler 3.1.</li>
+          <li data-i18n="assumption_season">Topná sezóna: průměr 236 topných dnů (dekáda), HDD 3848 °D (2013–2023), referenční teplota 21 °C.</li>
+          <li data-i18n="assumption_temps">Teploty: při přítomnosti 22 °C, mimo pobyt temperování 10 °C.</li>
+          <li data-i18n="assumption_hours">Ekvivalentní hodiny = (denostupně × 24) / 32 K.</li>
+          <li data-i18n="assumption_dhw">TUV (DHW): fixních 1800 kWh/rok (AC bez SCOP, ostatní dle SCOP/účinnosti).</li>
+          <li data-i18n="assumption_boiler">Elektrokotel: investice zahrnuje bojler +10 000 Kč.</li>
+          <li data-i18n="assumption_growth">Růst cen energií: 4 % ročně.</li>
+          <li data-i18n="assumption_gas_tax">Plyn: od 2. roku +30 % ETS2 příplatek na energii.</li>
+          <li data-i18n="assumption_prices">Ceny energií/účinnosti/servis dle nastavených zdrojů v aplikaci.</li>
+          <li data-i18n="assumption_fx">Směnné kurzy: 1 EUR = 24.693 CZK, 1 USD = 21.914 CZK (průměr 2025).</li>
           <li>
-            Zdroje:
+            <span data-i18n="assumption_sources">Zdroje:</span>
             <a class="underline" href="https://tscr.cz/topna-sezona-byla-delsi-a-chladnejsi-nez-minula-ale-spotreba-tepla-klesla/" target="_blank" rel="noreferrer">TSČR (HDD)</a>,
             <a class="underline" href="https://czechdaily.cz/czech-republics-heat-consumption-dips-by-six-percent/" target="_blank" rel="noreferrer">CzechDaily (průměr topných dnů)</a>,
             <a class="underline" href="https://www.chmi.cz/files/portal/docs/uoco/isko/grafroc/13groc/gr13cz/III_meteo_CZ.html" target="_blank" rel="noreferrer">ČHMÚ (definice denostupňů)</a>.
@@ -316,6 +341,287 @@
 
     <script>
       lucide.createIcons();
+
+      const TRANSLATIONS = {
+        cs: {
+          brand: "Heating ROI Calculator",
+          hero_title: "Porovnání návratnosti zdrojů tepla",
+          hero_subtitle:
+            "Získejte přehled o investici, provozních nákladech a vývoji ceny v čase. Kalkulačka využívá fyzikální i ekonomický model a reaguje na změny vstupů v reálném čase.",
+          chart_title: "Vývoj nákladů v čase",
+          chart_subtitle: "Porovnání všech zdrojů napříč celým horizontem.",
+          label_area: "Plocha (m²)",
+          label_horizon: "Horizont (let)",
+          label_days: "Dny v sezóně (22°C)",
+          label_ceiling: "Zateplení stropu",
+          label_walls: "Zateplení stěn",
+          label_windows: "Trojskla okna",
+          label_invest_gas: "Investice plyn ({currency})",
+          label_invest_electric: "Investice elektro ({currency})",
+          label_invest_pump: "Investice TČ ({currency})",
+          label_invest_ac: "Investice klima ({currency})",
+          note_hdd: "Výpočet vychází z českého průměru denostupňů (HDD) a délky topné sezóny.",
+          table_title: "Detailní srovnání",
+          th_source: "Zdroj",
+          th_invest: "Investice",
+          th_energy: "Energie po X letech",
+          th_service: "Servis po X letech",
+          th_total: "Celkem",
+          src_gas: "Plynový kotel",
+          src_electric: "Elektrokotel",
+          src_pump: "TČ vzduch-voda",
+          src_ac: "Klimatizace + bojler",
+          notes_default: "Tipy a upozornění se zobrazí podle zvolených parametrů.",
+          export_csv: "Export CSV",
+          pros_title: "Plusy a mínusy pro rekreační využití",
+          pros_gas_title: "Plynový kotel",
+          pros_gas_plus: "Plusy: stabilní výkon, snadná regulace, rychlý ohřev.",
+          pros_gas_minus: "Mínusy: závislost na přípojce plynu, pravidelný servis, ETS2 příplatek.",
+          pros_electric_title: "Elektrokotel + boiler",
+          pros_electric_plus: "Plusy: nízká investice, jednoduchá instalace, tichý provoz.",
+          pros_electric_minus: "Mínusy: vysoké provozní náklady při temperování i krátkých pobytech.",
+          pros_pump_title: "TČ vzduch-voda + boiler",
+          pros_pump_plus: "Plusy: nízké náklady na provoz, vhodné pro celoroční temperování.",
+          pros_pump_minus: "Mínusy: vyšší investice, delší náběh při sporadických pobytech.",
+          pros_ac_title: "Klimatizace + boiler",
+          pros_ac_plus: "Plusy: rychlé vyhřátí po příjezdu, nižší investice než TČ, funkce odvlhčování.",
+          pros_ac_minus: "Mínusy: nutnost samostatného TUV, výkon klesá v mrazech.",
+          assumptions_title: "Použité předpoklady",
+          assumption_consumption:
+            'Výchozí spotřeba: <span id="annualNeedValue" class="text-slate-100">-- kWh/rok</span>.',
+          assumption_power:
+            'Topný výkon: <span id="heatLossValue" class="text-slate-100">-- kW</span>.',
+          assumption_area: "Plocha: 80 m².",
+          assumption_dimensions: "Výška místností: 2.6 m, vnější rozměry: 10 × 8.45 m.",
+          assumption_city: "Plzeň – tepelný rozdíl návrhově ΔT = 32 K.",
+          assumption_walls: "Vnější zdi: plné cihly, šířka 45 cm.",
+          assumption_floor: "Podlaha: 1/2 domu podsklepeno, nevytápěno; beton + většinou dlažba.",
+          assumption_roof:
+            "Strop/půda: volná půda; omítka na rákosu, podbití, dřevěné trámy, prkna, 10 cm škvára, 2 cm beton.",
+          assumption_windows:
+            "Okna a dveře: 5× (900×1200 mm), 1× balkonové dveře, 1× vstupní bezpečnostní dveře, 1× (500×500 mm).",
+          assumption_uvalues:
+            "Součinitele prostupu tepla (U): stěny 1.45 / 0.25, strop 1.20 / 0.18, okna 2.40 / 0.85.",
+          assumption_scop: "SCOP: TČ vzduch-voda 3.0, Klimatizace + bojler 3.1.",
+          assumption_season:
+            "Topná sezóna: průměr 236 topných dnů (dekáda), HDD 3848 °D (2013–2023), referenční teplota 21 °C.",
+          assumption_temps: "Teploty: při přítomnosti 22 °C, mimo pobyt temperování 10 °C.",
+          assumption_hours: "Ekvivalentní hodiny = (denostupně × 24) / 32 K.",
+          assumption_dhw: "TUV (DHW): fixních 1800 kWh/rok (AC bez SCOP, ostatní dle SCOP/účinnosti).",
+          assumption_boiler: "Elektrokotel: investice zahrnuje bojler +10 000 Kč.",
+          assumption_growth: "Růst cen energií: 4 % ročně.",
+          assumption_gas_tax: "Plyn: od 2. roku +30 % ETS2 příplatek na energii.",
+          assumption_prices: "Ceny energií/účinnosti/servis dle nastavených zdrojů v aplikaci.",
+          assumption_fx: "Směnné kurzy: 1 EUR = 24.693 CZK, 1 USD = 21.914 CZK (průměr 2025).",
+          assumption_sources: "Zdroje:",
+          note_ceiling:
+            "⚠️ Doporučení: Zateplení stropu vatou (cca 15k Kč) zkrátí návratnost TČ o 3 roky.",
+          note_electric: "❗ Varování: Elektrokotel je u nezatepleného objektu extrémně rizikový.",
+          csv_source: "Zdroj",
+          csv_invest: "Investice",
+          csv_energy: "Energie_po_letech",
+          csv_service: "Servis_po_letech",
+          csv_total: "Celkem",
+        },
+        en: {
+          brand: "Heating ROI Calculator",
+          hero_title: "Heating System ROI Comparison",
+          hero_subtitle:
+            "Get a clear view of investment, operating costs, and total cost over time. The calculator uses a physical and economic model and updates in real time.",
+          chart_title: "Cost Trajectory Over Time",
+          chart_subtitle: "Comparison of all heat sources across the full horizon.",
+          label_area: "Area (m²)",
+          label_horizon: "Horizon (years)",
+          label_days: "Days in season (22°C)",
+          label_ceiling: "Ceiling insulation",
+          label_walls: "Wall insulation",
+          label_windows: "Triple-glazed windows",
+          label_invest_gas: "Gas investment ({currency})",
+          label_invest_electric: "Electric investment ({currency})",
+          label_invest_pump: "Heat pump investment ({currency})",
+          label_invest_ac: "AC investment ({currency})",
+          note_hdd: "Calculation uses Czech average heating degree days (HDD) and heating season length.",
+          table_title: "Detailed Comparison",
+          th_source: "Source",
+          th_invest: "Investment",
+          th_energy: "Energy after X years",
+          th_service: "Service after X years",
+          th_total: "Total",
+          src_gas: "Gas boiler",
+          src_electric: "Electric boiler",
+          src_pump: "Air-to-water heat pump",
+          src_ac: "AC + boiler",
+          notes_default: "Tips and warnings appear based on selected parameters.",
+          export_csv: "Export CSV",
+          pros_title: "Pros & Cons for Cottage Use",
+          pros_gas_title: "Gas boiler",
+          pros_gas_plus: "Pros: stable output, easy control, fast warm-up.",
+          pros_gas_minus: "Cons: gas connection dependency, regular service, ETS2 surcharge.",
+          pros_electric_title: "Electric boiler + boiler",
+          pros_electric_plus: "Pros: low investment, simple installation, quiet operation.",
+          pros_electric_minus: "Cons: high operating costs for tempering and short stays.",
+          pros_pump_title: "Air-to-water heat pump + boiler",
+          pros_pump_plus: "Pros: low operating costs, suitable for year-round tempering.",
+          pros_pump_minus: "Cons: higher investment, slower ramp-up for sporadic stays.",
+          pros_ac_title: "AC + boiler",
+          pros_ac_plus: "Pros: fast warm-up on arrival, lower investment than HP, dehumidification.",
+          pros_ac_minus: "Cons: separate DHW required, performance drops in frost.",
+          assumptions_title: "Assumptions",
+          assumption_consumption:
+            'Annual demand: <span id="annualNeedValue" class="text-slate-100">-- kWh/yr</span>.',
+          assumption_power:
+            'Heat loss: <span id="heatLossValue" class="text-slate-100">-- kW</span>.',
+          assumption_area: "Area: 80 m².",
+          assumption_dimensions: "Ceiling height: 2.6 m, external dimensions: 10 × 8.45 m.",
+          assumption_city: "Plzeň – design temperature difference ΔT = 32 K.",
+          assumption_walls: "Exterior walls: solid brick, 45 cm.",
+          assumption_floor: "Floor: half basemented, unheated; concrete + mostly tile.",
+          assumption_roof:
+            "Ceiling/attic: unheated attic; plaster on lath, boarding, timber beams, planks, 10 cm cinder, 2 cm concrete.",
+          assumption_windows:
+            "Windows & doors: 5× (900×1200 mm), 1× balcony door, 1× security entry door, 1× (500×500 mm).",
+          assumption_uvalues:
+            "U-values: walls 1.45 / 0.25, ceiling 1.20 / 0.18, windows 2.40 / 0.85.",
+          assumption_scop: "SCOP: air-to-water HP 3.0, AC + boiler 3.1.",
+          assumption_season:
+            "Heating season: avg 236 heating days (decade), HDD 3848 °D (2013–2023), reference temp 21 °C.",
+          assumption_temps: "Temperatures: 22 °C when present, 10 °C tempering otherwise.",
+          assumption_hours: "Equivalent hours = (degree-days × 24) / 32 K.",
+          assumption_dhw: "DHW: fixed 1800 kWh/yr (AC without SCOP, others per SCOP/efficiency).",
+          assumption_boiler: "Electric boiler investment includes +10,000 CZK for DHW boiler.",
+          assumption_growth: "Energy price growth: 4% annually.",
+          assumption_gas_tax: "Gas: +30% ETS2 energy surcharge from year 2.",
+          assumption_prices: "Energy prices/efficiency/service per configured sources.",
+          assumption_fx: "FX rates: 1 EUR = 24.693 CZK, 1 USD = 21.914 CZK (2025 average).",
+          assumption_sources: "Sources:",
+          note_ceiling:
+            "⚠️ Recommendation: Attic insulation (~15k CZK) shortens HP payback by 3 years.",
+          note_electric:
+            "❗ Warning: Electric boiler is extremely risky for an uninsulated building.",
+          csv_source: "Source",
+          csv_invest: "Investment",
+          csv_energy: "Energy_after_years",
+          csv_service: "Service_after_years",
+          csv_total: "Total",
+        },
+      };
+
+      const langToggle = document.getElementById("langToggle");
+      const currencyCzk = document.getElementById("currencyCzk");
+      const currencyEur = document.getElementById("currencyEur");
+      const currencyUsd = document.getElementById("currencyUsd");
+      const urlParams = new URLSearchParams(window.location.search);
+      const hashLang = window.location.hash === "#en" ? "en" : window.location.hash === "#cs" ? "cs" : null;
+      const isEnPath = window.location.pathname.startsWith("/en");
+      let currentLang = urlParams.get("lang") || hashLang || (isEnPath ? "en" : "cs");
+      const currencyParam = (urlParams.get("currency") || "").toUpperCase();
+      let currentCurrency = ["CZK", "EUR", "USD"].includes(currencyParam) ? currencyParam : "CZK";
+
+      function t(key) {
+        return TRANSLATIONS[currentLang]?.[key] ?? key;
+      }
+
+      function applyTranslations() {
+        document.documentElement.lang = currentLang === "en" ? "en" : "cs";
+        document.querySelectorAll("[data-i18n]").forEach((node) => {
+          const key = node.getAttribute("data-i18n");
+          const value = t(key).replace("{currency}", currentCurrency);
+          node.textContent = value;
+        });
+        document.querySelectorAll("[data-i18n-html]").forEach((node) => {
+          const key = node.getAttribute("data-i18n-html");
+          node.innerHTML = t(key);
+        });
+        if (langToggle) {
+          langToggle.textContent = currentLang === "cs" ? "EN" : "CZ";
+        }
+        updateCurrencyToggle();
+        updatePhysicsSummary();
+      }
+
+      if (langToggle) {
+        langToggle.addEventListener("click", () => {
+          const nextLang = currentLang === "cs" ? "en" : "cs";
+          if (window.location.protocol === "file:") {
+            const hash = nextLang === "en" ? "#en" : "#cs";
+            window.location.hash = hash;
+            currentLang = nextLang;
+            applyTranslations();
+            return;
+          }
+          const basePath = window.location.pathname.replace(/^\/en/, "") || "/";
+          const targetPath = nextLang === "en" ? `/en${basePath}` : basePath;
+          window.location.assign(`${targetPath}${window.location.search}${window.location.hash}`);
+        });
+      }
+
+      const FX_RATES = {
+        CZK: 1,
+        EUR: 1 / 24.693,
+        USD: 1 / 21.914,
+      };
+
+      function formatMoney(valueCzk) {
+        const rate = FX_RATES[currentCurrency] || 1;
+        return formatMoneyValue(valueCzk * rate);
+      }
+
+      function formatMoneyValue(value) {
+        return value.toLocaleString(currentLang === "cs" ? "cs-CZ" : "en-US", {
+          style: "currency",
+          currency: currentCurrency,
+          maximumFractionDigits: 0,
+        });
+      }
+
+      function updateCurrencyToggle() {
+        const activeClass = "bg-amber-300/30 text-amber-100";
+        const inactiveClass = "text-amber-100/60";
+        [currencyCzk, currencyEur, currencyUsd].forEach((btn) => {
+          btn.classList.remove(...activeClass.split(" "));
+          btn.classList.add(...inactiveClass.split(" "));
+        });
+        const active =
+          currentCurrency === "CZK" ? currencyCzk : currentCurrency === "EUR" ? currencyEur : currencyUsd;
+        active.classList.remove(...inactiveClass.split(" "));
+        active.classList.add(...activeClass.split(" "));
+      }
+
+      function convertInputValue(value, from, to) {
+        const fromRate = FX_RATES[from] || 1;
+        const toRate = FX_RATES[to] || 1;
+        return (value / fromRate) * toRate;
+      }
+
+      function updateInvestmentInputsForCurrency(prevCurrency, nextCurrency) {
+        const inputs = [investGasInput, investElectricInput, investPumpInput, investAcInput];
+        inputs.forEach((input) => {
+          const raw = Number(input.value || 0);
+          if (!Number.isFinite(raw)) return;
+          const converted = convertInputValue(raw, prevCurrency, nextCurrency);
+          input.value = Math.round(converted);
+        });
+      }
+
+      function setCurrency(next) {
+        const prev = currentCurrency;
+        currentCurrency = next;
+        updateInvestmentInputsForCurrency(prev, next);
+        updateCurrencyToggle();
+        applyTranslations();
+        const params = new URLSearchParams(window.location.search);
+        params.set("currency", currentCurrency);
+        const query = params.toString();
+        const nextUrl = `${window.location.pathname}?${query}${window.location.hash}`;
+        window.history.replaceState({}, "", nextUrl);
+      }
+
+      [currencyCzk, currencyEur, currencyUsd].forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const next = btn.textContent.trim().toUpperCase();
+          setCurrency(next);
+        });
+      });
 
       const areaInput = document.getElementById("areaInput");
       const ceilingCheck = document.getElementById("ceilingCheck");
@@ -404,6 +710,10 @@
       };
       let roiChart = null;
 
+      function getSourceLabel(key) {
+        return t(`src_${key}`);
+      }
+
       function formatNumber(value, decimals = 1) {
         return value.toLocaleString("cs-CZ", {
           minimumFractionDigits: decimals,
@@ -482,20 +792,16 @@
       }
 
       function formatCurrency(value) {
-        return value.toLocaleString("cs-CZ", {
-          style: "currency",
-          currency: "CZK",
-          maximumFractionDigits: 0,
-        });
+        return formatMoney(value);
       }
 
       function updateEconomics(annualNeed, years) {
         const seriesByKey = {};
         const investmentOverrides = {
-          gas: Math.max(0, Number(investGasInput.value || 0)),
-          electric: Math.max(0, Number(investElectricInput.value || 0)),
-          pump: Math.max(0, Number(investPumpInput.value || 0)),
-          ac: Math.max(0, Number(investAcInput.value || 0)),
+          gas: Math.max(0, Number(investGasInput.value || 0)) / (FX_RATES[currentCurrency] || 1),
+          electric: Math.max(0, Number(investElectricInput.value || 0)) / (FX_RATES[currentCurrency] || 1),
+          pump: Math.max(0, Number(investPumpInput.value || 0)) / (FX_RATES[currentCurrency] || 1),
+          ac: Math.max(0, Number(investAcInput.value || 0)) / (FX_RATES[currentCurrency] || 1),
         };
         HEAT_SOURCES.forEach((source) => {
           const investment = investmentOverrides[source.key] ?? source.investment;
@@ -539,9 +845,9 @@
       function buildNotes({ insulatedCeiling }) {
         const notes = [];
         if (!insulatedCeiling) {
-          notes.push("⚠️ Doporučení: Zateplení stropu vatou (cca 15k Kč) zkrátí návratnost TČ o 3 roky.");
+          notes.push(t("note_ceiling"));
         }
-        notes.push("❗ Varování: Elektrokotel je u nezatepleného objektu extrémně rizikový.");
+        notes.push(t("note_electric"));
         return notes;
       }
 
@@ -556,17 +862,25 @@
       }
 
       function exportCsv(seriesByKey, years) {
-        const headers = ["Zdroj", "Investice", "Naklady_po_letech", "Celkem"];
+        const headers = [
+          t("csv_source"),
+          t("csv_invest"),
+          t("csv_energy"),
+          t("csv_service"),
+          t("csv_total"),
+        ];
         const rows = HEAT_SOURCES.map((source) => {
           const series = seriesByKey[source.key] || [];
           const last = series[series.length - 1];
-          const operating = last ? Math.round(last.operating) : 0;
+          const energy = last ? Math.round(last.energy) : 0;
+          const service = last ? Math.round(last.service) : 0;
           const total = last ? Math.round(last.total) : source.investment;
           return [
-            source.label,
-            source.investment,
-            operating,
-            total,
+            getSourceLabel(source.key),
+            Math.round(source.investment * (FX_RATES[currentCurrency] || 1)),
+            Math.round(energy * (FX_RATES[currentCurrency] || 1)),
+            Math.round(service * (FX_RATES[currentCurrency] || 1)),
+            Math.round(total * (FX_RATES[currentCurrency] || 1)),
           ];
         });
         const lines = [headers.join(";"), ...rows.map((row) => row.join(";"))];
@@ -574,7 +888,8 @@
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
-        link.download = `heating-roi-${years}let.csv`;
+        const fileSuffix = currentLang === "cs" ? "let" : "years";
+        link.download = `heating-roi-${years}${fileSuffix}-${currentCurrency.toLowerCase()}.csv`;
         document.body.appendChild(link);
         link.click();
         link.remove();
@@ -597,7 +912,7 @@
                 callbacks: {
                   label: (ctx) => {
                     const value = ctx.parsed.y ?? 0;
-                    return `${ctx.dataset.label}: ${formatCurrency(value)}`;
+                    return `${ctx.dataset.label}: ${formatMoneyValue(value)}`;
                   },
                 },
               },
@@ -610,7 +925,7 @@
               y: {
                 ticks: {
                   color: "#cbd5f5",
-                  callback: (value) => `${(value / 1000).toFixed(0)}k`,
+                  callback: (value) => `${Math.round(value / 1000)}k ${currentCurrency}`,
                 },
                 grid: { color: "rgba(148, 163, 184, 0.2)" },
               },
@@ -621,9 +936,10 @@
 
       function updateChart(seriesByKey, years) {
         const labels = Array.from({ length: years + 1 }, (_, i) => `${i}`);
+        const rate = FX_RATES[currentCurrency] || 1;
         const datasets = HEAT_SOURCES.map((source) => ({
-          label: source.label,
-          data: (seriesByKey[source.key] || []).map((point) => point.total),
+          label: getSourceLabel(source.key),
+          data: (seriesByKey[source.key] || []).map((point) => point.total * rate),
           borderColor: CHART_COLORS[source.key],
           backgroundColor: CHART_COLORS[source.key] + "33",
           tension: 0.25,
@@ -697,6 +1013,10 @@
         exportCsv(seriesByKey, years);
       });
 
+      if (currentCurrency !== "CZK") {
+        updateInvestmentInputsForCurrency("CZK", currentCurrency);
+      }
+      applyTranslations();
       handleInputChange();
     </script>
   </body>
