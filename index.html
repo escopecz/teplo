@@ -151,7 +151,7 @@
                     />
                   </label>
                   <label class="flex items-center gap-2 text-xs text-slate">
-                  <span data-i18n="label_windows">Trojskla okna</span>
+                  <span data-i18n="label_windows">Nová okna</span>
                   <input
                     id="windowTripleCheck"
                     type="checkbox"
@@ -355,7 +355,7 @@
           label_days: "Dny v sezóně (22°C)",
           label_ceiling: "Zateplení stropu",
           label_walls: "Zateplení stěn",
-          label_windows: "Trojskla okna",
+          label_windows: "Nová okna",
           label_invest_gas: "Investice plyn ({currency})",
           label_invest_electric: "Investice elektro ({currency})",
           label_invest_pump: "Investice TČ ({currency})",
@@ -435,7 +435,7 @@
           label_days: "Days in season (22°C)",
           label_ceiling: "Ceiling insulation",
           label_walls: "Wall insulation",
-          label_windows: "Triple-glazed windows",
+          label_windows: "New windows",
           label_invest_gas: "Gas investment ({currency})",
           label_invest_electric: "Electric investment ({currency})",
           label_invest_pump: "Heat pump investment ({currency})",
@@ -513,7 +513,8 @@
       const urlParams = new URLSearchParams(window.location.search);
       const hashLang = window.location.hash === "#en" ? "en" : window.location.hash === "#cs" ? "cs" : null;
       const isEnPath = window.location.pathname.startsWith("/en");
-      let currentLang = urlParams.get("lang") || hashLang || (isEnPath ? "en" : "cs");
+      const languageParam = urlParams.get("language");
+      let currentLang = languageParam || hashLang || (isEnPath ? "en" : "cs");
       const currencyParam = (urlParams.get("currency") || "").toUpperCase();
       let currentCurrency = ["CZK", "EUR", "USD"].includes(currencyParam) ? currencyParam : "CZK";
 
@@ -542,16 +543,13 @@
       if (langToggle) {
         langToggle.addEventListener("click", () => {
           const nextLang = currentLang === "cs" ? "en" : "cs";
-          if (window.location.protocol === "file:") {
-            const hash = nextLang === "en" ? "#en" : "#cs";
-            window.location.hash = hash;
-            currentLang = nextLang;
-            applyTranslations();
-            return;
-          }
-          const basePath = window.location.pathname.replace(/^\/en/, "") || "/";
-          const targetPath = nextLang === "en" ? `/en${basePath}` : basePath;
-          window.location.assign(`${targetPath}${window.location.search}${window.location.hash}`);
+          currentLang = nextLang;
+          const params = new URLSearchParams(window.location.search);
+          params.set("language", currentLang);
+          const query = params.toString();
+          const nextUrl = `${window.location.pathname}?${query}${window.location.hash}`;
+          window.history.replaceState({}, "", nextUrl);
+          applyTranslations();
         });
       }
 
@@ -981,8 +979,28 @@
         updateNotes({ insulatedCeiling });
       }
 
+      function writeParams() {
+        const params = new URLSearchParams(window.location.search);
+        params.set("language", currentLang);
+        params.set("currency", currentCurrency);
+        params.set("area", areaInput.value);
+        params.set("horizon", horizonInput.value);
+        params.set("days", daysInput.value);
+        params.set("ceiling", ceilingCheck.checked ? "1" : "0");
+        params.set("walls", wallCheck.checked ? "1" : "0");
+        params.set("windows", windowTripleCheck.checked ? "1" : "0");
+        params.set("investGas", investGasInput.value);
+        params.set("investElectric", investElectricInput.value);
+        params.set("investPump", investPumpInput.value);
+        params.set("investAc", investAcInput.value);
+        const query = params.toString();
+        const nextUrl = `${window.location.pathname}?${query}${window.location.hash}`;
+        window.history.replaceState({}, "", nextUrl);
+      }
+
       function handleInputChange() {
         updatePhysicsSummary();
+        writeParams();
       }
 
       [
@@ -1013,9 +1031,40 @@
         exportCsv(seriesByKey, years);
       });
 
-      if (currentCurrency !== "CZK") {
-        updateInvestmentInputsForCurrency("CZK", currentCurrency);
+      function loadFromParams() {
+        const params = new URLSearchParams(window.location.search);
+        const area = params.get("area");
+        const horizon = params.get("horizon");
+        const days = params.get("days");
+        const ceiling = params.get("ceiling");
+        const walls = params.get("walls");
+        const windows = params.get("windows");
+        const investGas = params.get("investGas");
+        const investElectric = params.get("investElectric");
+        const investPump = params.get("investPump");
+        const investAc = params.get("investAc");
+
+        if (area) areaInput.value = area;
+        if (horizon) horizonInput.value = horizon;
+        if (days) daysInput.value = days;
+        if (ceiling !== null) ceilingCheck.checked = ceiling === "1";
+        if (walls !== null) wallCheck.checked = walls === "1";
+        if (windows !== null) windowTripleCheck.checked = windows === "1";
+
+        const hasInvestmentParams = [investGas, investElectric, investPump, investAc].some(
+          (value) => value !== null
+        );
+        if (hasInvestmentParams) {
+          if (investGas !== null) investGasInput.value = investGas;
+          if (investElectric !== null) investElectricInput.value = investElectric;
+          if (investPump !== null) investPumpInput.value = investPump;
+          if (investAc !== null) investAcInput.value = investAc;
+        } else if (currentCurrency !== "CZK") {
+          updateInvestmentInputsForCurrency("CZK", currentCurrency);
+        }
       }
+
+      loadFromParams();
       applyTranslations();
       handleInputChange();
     </script>
